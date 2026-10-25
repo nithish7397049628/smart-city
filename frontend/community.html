@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Reports & Citizen Support – Smart City 360</title>
+  <meta name="description" content="Browse publicly verified civic problems, upvote existing issues to prevent duplicates, and hold city departments accountable.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/index.html" class="brand-logo">
+        <img src="assets/images/logo.svg" alt="Smart City 360">
+      </a>
+
+      <button class="mobile-nav-toggle" aria-label="Toggle Navigation">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+
+      <nav class="main-nav">
+        <a href="/index.html" class="nav-link" data-i18n="nav_home">Home</a>
+        <a href="/report.html" class="nav-link" data-i18n="nav_report">Report a Problem</a>
+        <a href="/map.html" class="nav-link" data-i18n="nav_map">Live Map</a>
+        <a href="/priority.html" class="nav-link" data-i18n="nav_priority">Priority Areas</a>
+        <a href="/track.html" class="nav-link" data-i18n="nav_track">Track Complaint</a>
+        <a href="/community.html" class="nav-link active" data-i18n="nav_community">Community Reports</a>
+        <a href="/about.html" class="nav-link" data-i18n="nav_about">About Us</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="lang-selector">
+          <select class="lang-select" aria-label="Select Language">
+            <option value="en">English</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+          </select>
+        </div>
+        <div id="headerUserSection">
+          <a href="/login.html" class="btn btn-secondary btn-sm" data-i18n="nav_login">Login / Register</a>
+        </div>
+        <a href="/report.html" class="btn btn-primary btn-sm">Report Issue</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <div style="background: var(--navy-900); color: #fff; padding: 40px 0 50px;">
+    <div class="container text-center" style="max-width: 780px; margin: 0 auto; text-align: center;">
+      <span style="display:inline-block; background:rgba(13,148,136,0.25); color:var(--teal-400); padding:4px 14px; border-radius:99px; font-weight:700; font-size:0.85rem; margin-bottom:12px;">
+        COMMUNITY PARTICIPATION
+      </span>
+      <h1 style="font-size: 2.4rem; color: #fff; margin-bottom: 12px;">Public Civic Problem Feed</h1>
+      <p style="color: #CBD5E1; font-size: 1.05rem;">
+        Support existing problems in your neighborhood to reinforce their priority score without submitting duplicate tickets. Citizen privacy is strictly protected.
+      </p>
+    </div>
+  </div>
+
+  <main style="padding: 40px 0 70px;">
+    <div class="container">
+
+      <!-- Search & Filters Toolbar -->
+      <div style="background: #fff; border-radius: var(--radius-xl); padding: 20px 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--surface-200); margin-bottom: 30px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+        
+        <div style="flex-grow: 1; min-width: 260px; position: relative;">
+          <input type="text" id="communitySearch" class="form-control" placeholder="Search by area, landmark, or problem..." style="padding-left: 36px;">
+          <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);">🔍</span>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <select id="communityCategoryFilter" class="filter-select" style="min-width: 160px;">
+            <option value="">All Categories</option>
+          </select>
+
+          <select id="communityPriorityFilter" class="filter-select">
+            <option value="">All Priorities</option>
+            <option value="Critical">🔴 Critical</option>
+            <option value="High">🟠 High</option>
+            <option value="Medium">🟡 Medium</option>
+            <option value="Low">🟢 Low</option>
+          </select>
+
+          <select id="communityStatusFilter" class="filter-select">
+            <option value="">All Statuses</option>
+            <option value="Submitted">Submitted</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Feed Grid -->
+      <div class="priority-grid" id="communityGrid">
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
+          Loading community reports feed...
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <div>© 2026 Smart City 360 – Smart Civic Issue Reporting and Resolution System.</div>
+      <div>Citizens' personal contact information is protected as per privacy standards.</div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/community.js"></script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us, Privacy Policy & FAQ – Smart City 360</title>
+  <meta name="description" content="Learn about Smart City 360's vision, data privacy commitments, and departmental workflow.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Site Navigation Bar -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/index.html" class="brand-logo">
+        <img src="assets/images/logo.svg" alt="Smart City 360">
+      </a>
+
+      <button class="mobile-nav-toggle" aria-label="Toggle Navigation">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+
+      <nav class="main-nav">
+        <a href="/index.html" class="nav-link" data-i18n="nav_home">Home</a>
+        <a href="/report.html" class="nav-link" data-i18n="nav_report">Report a Problem</a>
+        <a href="/map.html" class="nav-link" data-i18n="nav_map">Live Map</a>
+        <a href="/priority.html" class="nav-link" data-i18n="nav_priority">Priority Areas</a>
+        <a href="/track.html" class="nav-link" data-i18n="nav_track">Track Complaint</a>
+        <a href="/community.html" class="nav-link" data-i18n="nav_community">Community Reports</a>
+        <a href="/about.html" class="nav-link active" data-i18n="nav_about">About Us</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="lang-selector">
+          <select class="lang-select" aria-label="Select Language">
+            <option value="en">English</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+          </select>
+        </div>
+        <div id="headerUserSection">
+          <a href="/login.html" class="btn btn-secondary btn-sm" data-i18n="nav_login">Login / Register</a>
+        </div>
+        <a href="/report.html" class="btn btn-primary btn-sm">Report Issue</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <div style="background: var(--navy-900); color: #fff; padding: 50px 0 60px;">
+    <div class="container text-center" style="max-width: 800px; margin: 0 auto; text-align: center;">
+      <span style="display:inline-block; background:rgba(20,184,166,0.2); color:var(--teal-400); padding:4px 14px; border-radius:99px; font-weight:700; font-size:0.85rem; margin-bottom:12px;">
+        MISSION & TRANSPARENCY
+      </span>
+      <h1 style="font-size: 2.6rem; color: #fff; margin-bottom: 12px;">Your Voice. Our City. A Better Tomorrow.</h1>
+      <p style="color: #CBD5E1; font-size: 1.1rem; line-height: 1.6;">
+        Smart City 360 is an intelligent civic issue reporting and resolution system that bridges citizens and local government authorities through interactive maps and community-driven prioritisation.
+      </p>
+    </div>
+  </div>
+
+  <main style="padding: 50px 0 80px;">
+    <div class="container" style="max-width: 960px;">
+
+      <!-- Section: Vision and Objective -->
+      <section style="background: #fff; border-radius: var(--radius-xl); padding: 36px 40px; box-shadow: var(--shadow-sm); border: 1px solid var(--surface-200); margin-bottom: 36px;">
+        <h2 style="font-size: 1.6rem; color: var(--navy-900); margin-bottom: 14px;">1. Project Objectives</h2>
+        <p style="color: var(--navy-700); font-size: 1rem; line-height: 1.7; margin-bottom: 16px;">
+          The primary objective of <strong>Smart City 360</strong> is to make civic complaint reporting simple, transparent, and accessible to every citizen. Traditional grievance portals often function as black holes where tickets linger for months without updates. Smart City 360 solves this through:
+        </p>
+        <ul style="padding-left: 20px; line-height: 1.8; color: var(--navy-800); margin-bottom: 16px;">
+          <li><strong>Geographic Transparency:</strong> Pinpointing civic issues on Leaflet + OpenStreetMap maps to reveal high-density crisis clusters.</li>
+          <li><strong>Intelligent Community Prioritization:</strong> Automatically calculating priority scores using frequency, unresolved backlog, safety severity, recency, and citizen confirmations.</li>
+          <li><strong>Closed-Loop Accountability:</strong> Full audit history tracking each status transition, accompanied by official engineer remarks and photo evidence of resolution.</li>
+          <li><strong>Duplicate Issue Mitigation:</strong> Suggesting existing nearby issues to citizens so they can upvote rather than cluttering municipal queues.</li>
+        </ul>
+      </section>
+
+      <!-- Section: Privacy Policy (Section 9 & 15) -->
+      <section id="privacy" style="background: #fff; border-radius: var(--radius-xl); padding: 36px 40px; box-shadow: var(--shadow-sm); border: 1px solid var(--surface-200); margin-bottom: 36px;">
+        <h2 style="font-size: 1.6rem; color: var(--navy-900); margin-bottom: 14px;">2. Citizen Privacy Policy</h2>
+        <p style="color: var(--navy-700); font-size: 0.95rem; line-height: 1.7; margin-bottom: 12px;">
+          Smart City 360 adheres strictly to the <strong>Digital Personal Data Protection (DPDP) Act</strong> principles:
+        </p>
+        <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: 20px;">
+          <div style="margin-bottom: 12px;">
+            <strong style="color: var(--navy-900);">Data Masking:</strong>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Citizen phone numbers and email addresses are NEVER displayed in public feeds or community reports. Phone numbers are securely masked (e.g. <code>+91 984*****77</code>).</p>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <strong style="color: var(--navy-900);">Location Safety:</strong>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Location coordinates are captured solely to identify the public infrastructure needing repair. Private home boundaries are not harvested.</p>
+          </div>
+          <div>
+            <strong style="color: var(--navy-900);">Access Control:</strong>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Only authorized and authenticated municipal officials have permission to inspect full contact numbers for direct field verification.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Frequently Asked Questions (FAQ) -->
+      <section id="faq" style="background: #fff; border-radius: var(--radius-xl); padding: 36px 40px; box-shadow: var(--shadow-sm); border: 1px solid var(--surface-200); margin-bottom: 36px;">
+        <h2 style="font-size: 1.6rem; color: var(--navy-900); margin-bottom: 18px;">3. Frequently Asked Questions (FAQ)</h2>
+
+        <div style="margin-bottom: 18px;">
+          <h4 style="font-size: 1.05rem; color: var(--navy-900); margin-bottom: 4px;">Q: How does the priority algorithm determine what gets fixed first?</h4>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+            A: The system calculates a score from 0 to 100 based on: Report Frequency (30%), Unresolved Backlog (25%), Inherent Danger / Severity (20%), Recency (15%), and Community Support Upvotes (10%). Issues with a score >= 80 are flagged as Critical.
+          </p>
+        </div>
+
+        <div style="margin-bottom: 18px;">
+          <h4 style="font-size: 1.05rem; color: var(--navy-900); margin-bottom: 4px;">Q: What if the authority marks my complaint resolved, but the problem still exists?</h4>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+            A: Citizens can open the "Track Complaint" page and click <strong>"Reopen Complaint Ticket"</strong>. This automatically increases the issue's priority score and alerts higher-level zonal officers.
+          </p>
+        </div>
+
+        <div style="margin-bottom: 18px;">
+          <h4 style="font-size: 1.05rem; color: var(--navy-900); margin-bottom: 4px;">Q: Do I need to create an account to report an issue?</h4>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+            A: No! Any citizen can submit a complaint immediately by providing their name and mobile number. Creating an account simply allows you to manage all your submitted complaints from a personal dashboard.
+          </p>
+        </div>
+      </section>
+
+      <!-- Section: Contact Details -->
+      <section style="background: var(--surface-50); border-radius: var(--radius-xl); padding: 30px; border: 1px solid var(--surface-200); text-align: center;">
+        <h3 style="font-size: 1.3rem; color: var(--navy-900); margin-bottom: 8px;">Municipal Control Room & Helpline</h3>
+        <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 16px;">
+          Available 24 hours a day, 7 days a week for civic emergency coordination.
+        </p>
+        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+          <div class="stat-card" style="padding: 14px 20px;">
+            <div style="font-size: 0.8rem; color: var(--text-muted);">TOLL-FREE HELPLINE</div>
+            <div style="font-weight: 800; font-size: 1.2rem; color: var(--teal-700);">1800-425-3600</div>
+          </div>
+          <div class="stat-card" style="padding: 14px 20px;">
+            <div style="font-size: 0.8rem; color: var(--text-muted);">WHATSAPP GRIEVANCE DESK</div>
+            <div style="font-weight: 800; font-size: 1.2rem; color: var(--navy-900);">+91 94451 90001</div>
+          </div>
+          <div class="stat-card" style="padding: 14px 20px;">
+            <div style="font-size: 0.8rem; color: var(--text-muted);">CENTRAL EMAIL SUPPORT</div>
+            <div style="font-weight: 800; font-size: 1.2rem; color: var(--navy-900);">grievance@smartcity360.gov.in</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <div>© 2026 Smart City 360 – Smart Civic Issue Reporting and Resolution System.</div>
+      <div>Designed for citizen empowerment and responsive municipal governance.</div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

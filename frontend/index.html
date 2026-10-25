@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart City 360 – Smart Civic Issue Reporting and Resolution System</title>
+  <meta name="description" content="Report civic problems in your neighbourhood, track complaint progress, and help authorities prioritise the issues that matter most with intelligent community-based priority mapping.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Site Navigation Bar -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/index.html" class="brand-logo" id="logoLink">
+        <img src="assets/images/logo.svg" alt="Smart City 360 Logo">
+      </a>
+
+      <button class="mobile-nav-toggle" aria-label="Toggle Navigation">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+
+      <nav class="main-nav" id="mainNavigation">
+        <a href="/index.html" class="nav-link active" data-i18n="nav_home">Home</a>
+        <a href="/report.html" class="nav-link" data-i18n="nav_report">Report a Problem</a>
+        <a href="/map.html" class="nav-link" data-i18n="nav_map">Live Map</a>
+        <a href="/priority.html" class="nav-link" data-i18n="nav_priority">Priority Areas</a>
+        <a href="/track.html" class="nav-link" data-i18n="nav_track">Track Complaint</a>
+        <a href="/community.html" class="nav-link" data-i18n="nav_community">Community Reports</a>
+        <a href="/about.html" class="nav-link" data-i18n="nav_about">About Us</a>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Language Selector -->
+        <div class="lang-selector">
+          <select class="lang-select" aria-label="Select Language">
+            <option value="en">English</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+          </select>
+        </div>
+
+        <!-- Auth Section -->
+        <div id="headerUserSection">
+          <a href="/login.html" class="btn btn-secondary btn-sm" data-i18n="nav_login">Login / Register</a>
+        </div>
+
+        <a href="/report.html" class="btn btn-primary" id="btnReportIssueNav" data-i18n="btn_report_issue">Report an Issue</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-tag" data-i18n="hero_tag">
+          <span>🛡️</span> Smart Civic Tech Platform
+        </div>
+        <h1 class="hero-headline">
+          <span data-i18n="hero_headline">Let's Build a Better City Together</span>
+        </h1>
+        <p class="hero-desc" data-i18n="hero_desc">
+          Report civic problems in your neighbourhood, track complaint progress, and help authorities prioritise the issues that matter most.
+        </p>
+        <div class="hero-buttons">
+          <a href="/report.html" class="btn btn-accent btn-lg" id="heroBtnReport" data-i18n="hero_btn_report">
+            <span>📢</span> Report a Problem
+          </a>
+          <a href="/map.html" class="btn btn-secondary btn-lg" id="heroBtnMap" data-i18n="hero_btn_map" style="color:var(--navy-900);">
+            <span>🗺️</span> Explore Live Map
+          </a>
+        </div>
+      </div>
+      <div class="hero-image-wrap">
+        <img src="assets/images/hero-city.svg" alt="Smart City Infrastructure Connectivity Visualization">
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Statistics Dashboard -->
+  <section class="stats-bar-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card total">
+          <div class="stat-icon">📊</div>
+          <div class="stat-value" id="statTotal">--</div>
+          <div class="stat-label" data-i18n="stat_total">Total Complaints</div>
+        </div>
+        <div class="stat-card pending">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-value" id="statPending">--</div>
+          <div class="stat-label" data-i18n="stat_pending">Pending</div>
+        </div>
+        <div class="stat-card review">
+          <div class="stat-icon">🔍</div>
+          <div class="stat-value" id="statReview">--</div>
+          <div class="stat-label" data-i18n="stat_review">Under Review</div>
+        </div>
+        <div class="stat-card in-progress">
+          <div class="stat-icon">🛠️</div>
+          <div class="stat-value" id="statProgress">--</div>
+          <div class="stat-label" data-i18n="stat_progress">In Progress</div>
+        </div>
+        <div class="stat-card resolved">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value" id="statResolved">--</div>
+          <div class="stat-label" data-i18n="stat_resolved">Resolved</div>
+        </div>
+        <div class="stat-card critical">
+          <div class="stat-icon">🚨</div>
+          <div class="stat-value" id="statPriority">--</div>
+          <div class="stat-label" data-i18n="stat_priority">High-Priority Areas</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Priority Highlights Section (Community Ranked) -->
+  <section style="padding: 30px 0 60px;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag" data-i18n="section_priority_tag">Intelligent Action System</div>
+        <h2 class="section-title" data-i18n="section_priority_title">Community Priority Highlights</h2>
+        <p class="section-subtitle" data-i18n="section_priority_sub">
+          Issues automatically ranked by report frequency, severity, recency, and citizen impact.
+        </p>
+      </div>
+
+      <div class="priority-grid" id="priorityCardsContainer">
+        <!-- Dynamically Populated Cards -->
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
+          Loading ranked civic priorities from community reports...
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 10px;">
+        <a href="/priority.html" class="btn btn-secondary btn-lg" style="box-shadow:var(--shadow-sm);">
+          <span>📊</span> Explore All Priority Areas & Algorithmic Breakdown
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section style="background: var(--surface-100); padding: 70px 0; border-top: 1px solid var(--surface-200); border-bottom: 1px solid var(--surface-200);">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Empowering Citizens</div>
+        <h2 class="section-title">How Smart City 360 Works</h2>
+        <p class="section-subtitle">A transparent, 4-step pipeline that turns public complaints into accountable government action.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;">
+        <div style="background: #fff; padding: 30px 24px; border-radius: var(--radius-lg); border: 1px solid var(--surface-200); text-align: center; box-shadow: var(--shadow-sm);">
+          <div style="width: 56px; height: 56px; margin: 0 auto 18px; border-radius: 50%; background: var(--teal-50); color: var(--teal-600); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 800;">1</div>
+          <h3 style="font-size: 1.2rem; margin-bottom: 10px;">Report with Map & Photo</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Citizens submit issues with exact GPS coordinates, photos, and severity. Real-time duplicate checking prevents noise.</p>
+        </div>
+
+        <div style="background: #fff; padding: 30px 24px; border-radius: var(--radius-lg); border: 1px solid var(--surface-200); text-align: center; box-shadow: var(--shadow-sm);">
+          <div style="width: 56px; height: 56px; margin: 0 auto 18px; border-radius: 50%; background: var(--priority-high-bg); color: var(--priority-high); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 800;">2</div>
+          <h3 style="font-size: 1.2rem; margin-bottom: 10px;">Community Prioritisation</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Our intelligent multi-factor algorithm scores areas based on frequency, safety risks, and verified community confirmations.</p>
+        </div>
+
+        <div style="background: #fff; padding: 30px 24px; border-radius: var(--radius-lg); border: 1px solid var(--surface-200); text-align: center; box-shadow: var(--shadow-sm);">
+          <div style="width: 56px; height: 56px; margin: 0 auto 18px; border-radius: 50%; background: #EEF2FF; color: #4F46E5; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 800;">3</div>
+          <h3 style="font-size: 1.2rem; margin-bottom: 10px;">Official Department Routing</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Complaints route immediately to designated engineers across 9 municipal departments with SLA timeframes.</p>
+        </div>
+
+        <div style="background: #fff; padding: 30px 24px; border-radius: var(--radius-lg); border: 1px solid var(--surface-200); text-align: center; box-shadow: var(--shadow-sm);">
+          <div style="width: 56px; height: 56px; margin: 0 auto 18px; border-radius: 50%; background: var(--priority-low-bg); color: var(--priority-low); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 800;">4</div>
+          <h3 style="font-size: 1.2rem; margin-bottom: 10px;">Live Tracking & Resolution</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Citizens track status progress, view resolution evidence photos, or reopen tickets if the problem remains unaddressed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Call to Action Banner -->
+  <section style="padding: 70px 0; background: linear-gradient(135deg, var(--navy-900), #0F766E); color: #fff;">
+    <div class="container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 30px;">
+      <div style="max-width: 600px;">
+        <h2 style="font-size: 2.2rem; color: #fff; margin-bottom: 12px;">See what's happening around you right now</h2>
+        <p style="color: #CBD5E1; font-size: 1.05rem;">
+          Open our interactive heat-mapped live city visualizer to inspect color-coded danger zones, open potholes, streetlight outages, and pipeline fractures.
+        </p>
+      </div>
+      <div>
+        <a href="/map.html" class="btn btn-accent btn-lg" style="font-size: 1.1rem; padding: 16px 32px;">
+          <span>🌍</span> Launch Interactive Map View
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="assets/images/logo.svg" alt="Smart City 360" style="filter: brightness(0) invert(1); height: 42px;">
+          <p>
+            Smart City 360 – Empowering citizens to transform urban governance through transparent, community-driven civic issue identification and accountability.
+          </p>
+          <div style="margin-top: 16px; font-weight: 600; color: var(--teal-400);">
+            "Your Voice. Our City. A Better Tomorrow."
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Civic Services</h4>
+          <ul class="footer-links">
+            <li><a href="/report.html">Report Civic Problem</a></li>
+            <li><a href="/map.html">Live Interactive Map</a></li>
+            <li><a href="/priority.html">Priority Neighbourhoods</a></li>
+            <li><a href="/track.html">Track Complaint Ticket</a></li>
+            <li><a href="/community.html">Community Reports</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Governance</h4>
+          <ul class="footer-links">
+            <li><a href="/dashboard.html">Government Officials Portal</a></li>
+            <li><a href="/about.html#departments">Municipal Departments</a></li>
+            <li><a href="/about.html#faq">Help & FAQs</a></li>
+            <li><a href="/about.html#privacy">Citizen Privacy Policy</a></li>
+            <li><a href="/login.html">Official Login</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Civic Helpline</h4>
+          <p style="font-size: 0.9rem; margin-bottom: 12px;">Toll-Free Control Room: <strong>1800-425-3600</strong></p>
+          <p style="font-size: 0.9rem; margin-bottom: 12px;">Emergency Dispatch: <strong>112 / 108</strong></p>
+          <p style="font-size: 0.85rem; color: #64748B;">Supported by Ministry of Housing and Urban Affairs & State Municipal Corporation.</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Smart City 360. All Rights Reserved.</div>
+        <div>Compliant with Digital Personal Data Protection Act & Open Data Standards.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Load Dynamic Live Statistics & Priority Cards
+    async function loadHomeData() {
+      try {
+        // 1. Fetch Overview Statistics
+        const statsRes = await apiGet('/stats/overview');
+        if (statsRes.success && statsRes.data) {
+          const s = statsRes.data;
+          document.getElementById('statTotal').textContent = s.total;
+          document.getElementById('statPending').textContent = s.pending;
+          document.getElementById('statReview').textContent = s.underReview;
+          document.getElementById('statProgress').textContent = s.inProgress;
+          document.getElementById('statResolved').textContent = s.resolved;
+          document.getElementById('statPriority').textContent = s.highPriority;
+        }
+
+        // 2. Fetch Ranked Priority Highlights
+        const rankRes = await apiGet('/stats/priority-rankings');
+        if (rankRes.success && rankRes.data) {
+          renderPriorityCards(rankRes.data.rankedComplaints || []);
+        }
+      } catch (err) {
+        console.error('Error fetching home data:', err);
+      }
+    }
+
+    function renderPriorityCards(complaints) {
+      const container = document.getElementById('priorityCardsContainer');
+      if (!complaints || complaints.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px;">No open high-priority issues reported at this moment.</div>';
+        return;
+      }
+
+      container.innerHTML = complaints.map(c => {
+        const priorityClass = `badge-${c.priority_level ? c.priority_level.toLowerCase() : 'medium'}`;
+        const imageSrc = (c.images && c.images.length > 0) ? c.images[0] : 'assets/images/hero-city.svg';
+
+        return `
+          <div class="complaint-card">
+            <div class="card-media">
+              <img src="${imageSrc}" alt="${c.title}" onerror="this.src='assets/images/hero-city.svg'">
+              <div class="card-badges">
+                <span class="badge ${priorityClass}">
+                  <span class="pulse-dot"></span>
+                  ${c.priority_level} Priority (Score: ${c.priority_score})
+                </span>
+                <span class="badge" style="background: rgba(15,23,42,0.8); color: #fff;">
+                  ${c.status}
+                </span>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="card-meta-line">
+                <span class="category-pill">${c.category_name}</span>
+                <span class="card-tracking-id">${c.tracking_id}</span>
+              </div>
+
+              <h3 class="card-title">${c.title}</h3>
+              <p class="card-desc">${c.description}</p>
+
+              <div class="card-location">
+                <span>📍</span>
+                <span>${c.area_name}, ${c.city}</span>
+              </div>
+
+              <div class="card-footer">
+                <button class="btn-support" onclick="handleUpvote(${c.id}, this)">
+                  <span>👍 Support Issue</span>
+                  <span class="support-count">${c.upvote_count || 0}</span>
+                </button>
+
+                <div style="display:flex; gap:8px;">
+                  <a href="/map.html?focus=${c.id}" class="btn btn-outline-primary btn-sm" title="View on map">
+                    <span>🗺️</span> View on Map
+                  </a>
+                  <a href="/track.html?id=${c.tracking_id}" class="btn btn-secondary btn-sm" title="Track Ticket">
+                    Track
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', loadHomeData);
+  </script>
+</body>
+</html>

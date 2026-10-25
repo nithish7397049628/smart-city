@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Government Officials & Admin Portal – Smart City 360</title>
+  <meta name="description" content="Municipal officials command centre for complaint management, department routing, resolution evidence, and priority scoring.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body style="background: var(--surface-100);">
+
+  <!-- Site Navigation Bar -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/index.html" class="brand-logo">
+        <img src="assets/images/logo.svg" alt="Smart City 360">
+      </a>
+
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="background:var(--navy-900); color:var(--teal-400); font-weight:800; font-size:0.8rem; padding:4px 12px; border-radius:99px; letter-spacing:0.5px;">
+          GOVERNMENT CONTROL CENTRE
+        </span>
+      </div>
+
+      <div class="header-actions">
+        <div id="headerUserSection"></div>
+        <a href="/index.html" class="btn btn-secondary btn-sm">Exit to Public Site</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dashboard Layout -->
+  <div class="dashboard-layout">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="dashboard-sidebar">
+      <div style="font-size:0.75rem; text-transform:uppercase; font-weight:800; color:#64748B; letter-spacing:1px; margin-bottom:12px; padding-left:12px;">
+        NAVIGATION
+      </div>
+      <div class="dashboard-nav-item active" data-tab="tabOverview">
+        <span>📊</span> Analytics Overview
+      </div>
+      <div class="dashboard-nav-item" data-tab="tabComplaints">
+        <span>📑</span> Complaint Management Queue
+      </div>
+      <div class="dashboard-nav-item" data-tab="tabDepartments">
+        <span>🏛️</span> Department Routing
+      </div>
+      <div class="dashboard-nav-item" data-tab="tabGovGateway">
+        <span>🌐</span> Government API Gateway
+      </div>
+      <div class="dashboard-nav-item" data-tab="tabAlgorithmConfig" id="navAlgorithmConfig">
+        <span>⚙️</span> Priority Algorithm Settings
+      </div>
+
+      <div style="margin-top:auto; padding:16px 12px; border-top:1px solid rgba(255,255,255,0.1);">
+        <button id="btnExportCsv" class="btn btn-accent btn-sm" style="width:100%;">
+          <span>📥</span> Export Complaints to CSV
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-content">
+
+      <!-- TAB 1: ANALYTICS OVERVIEW -->
+      <section id="tabOverview" class="tab-pane">
+        
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h1 style="font-size:1.8rem; color:var(--navy-900);">Civic Intelligence Dashboard</h1>
+            <p style="color:var(--text-muted); font-size:0.95rem;">Live municipal grievance telemetry across city zones</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <a href="/map.html" class="btn btn-secondary btn-sm">
+              <span>🗺️</span> Open Live Map
+            </a>
+            <button onclick="refreshDashboardData()" class="btn btn-primary btn-sm">
+              <span>🔄</span> Refresh Telemetry
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Stat Cards -->
+        <div class="stats-grid" style="margin-bottom:28px;">
+          <div class="stat-card total">
+            <div class="stat-icon">📊</div>
+            <div class="stat-value" id="dashTotal">--</div>
+            <div class="stat-label">Total Registered</div>
+          </div>
+          <div class="stat-card pending">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-value" id="dashPending">--</div>
+            <div class="stat-label">Pending Review</div>
+          </div>
+          <div class="stat-card in-progress">
+            <div class="stat-icon">🛠️</div>
+            <div class="stat-value" id="dashProgress">--</div>
+            <div class="stat-label">Work in Progress</div>
+          </div>
+          <div class="stat-card resolved">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value" id="dashResolved">--</div>
+            <div class="stat-label">Resolved Issues</div>
+          </div>
+          <div class="stat-card critical">
+            <div class="stat-icon">🚨</div>
+            <div class="stat-value" id="dashCritical">--</div>
+            <div class="stat-label">Critical Priorities</div>
+          </div>
+          <div class="stat-card review">
+            <div class="stat-icon">📈</div>
+            <div class="stat-value" id="dashResolutionRate">--%</div>
+            <div class="stat-label">Resolution Rate</div>
+          </div>
+        </div>
+
+        <!-- Chart.js Visualizations (Section 10) -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:28px;">
+          
+          <div style="background:#fff; border-radius:var(--radius-xl); padding:24px; border:1px solid var(--surface-200); box-shadow:var(--shadow-sm);">
+            <h3 style="font-size:1.1rem; color:var(--navy-900); margin-bottom:16px;">Complaints by Problem Category</h3>
+            <div style="height:280px; position:relative;">
+              <canvas id="categoryChart"></canvas>
+            </div>
+          </div>
+
+          <div style="background:#fff; border-radius:var(--radius-xl); padding:24px; border:1px solid var(--surface-200); box-shadow:var(--shadow-sm);">
+            <h3 style="font-size:1.1rem; color:var(--navy-900); margin-bottom:16px;">Priority Distribution Index</h3>
+            <div style="height:280px; position:relative;">
+              <canvas id="priorityChart"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Department Resolution Performance Chart -->
+        <div style="background:#fff; border-radius:var(--radius-xl); padding:24px; border:1px solid var(--surface-200); box-shadow:var(--shadow-sm); margin-bottom:28px;">
+          <h3 style="font-size:1.1rem; color:var(--navy-900); margin-bottom:16px;">Department Workload & Resolution Performance</h3>
+          <div style="height:260px; position:relative;">
+            <canvas id="departmentChart"></canvas>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 2: COMPLAINT MANAGEMENT QUEUE -->
+      <section id="tabComplaints" class="tab-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h2 style="font-size:1.6rem; color:var(--navy-900);">Municipal Grievance Queue</h2>
+            <p style="color:var(--text-muted); font-size:0.9rem;">Authorised officials can update statuses, add remarks, upload proof, or re-route tickets.</p>
+          </div>
+          
+          <div style="display:flex; gap:10px;">
+            <input type="text" id="queueSearchInput" class="form-control" placeholder="Search ticket, name, area..." style="min-width:240px;">
+            <select id="queuePriorityFilter" class="filter-select">
+              <option value="">All Priorities</option>
+              <option value="Critical">🔴 Critical</option>
+              <option value="High">🟠 High</option>
+              <option value="Medium">🟡 Medium</option>
+              <option value="Low">🟢 Low</option>
+            </select>
+            <select id="queueStatusFilter" class="filter-select">
+              <option value="">All Statuses</option>
+              <option value="Submitted">Submitted</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Resolved">Resolved</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="data-table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Tracking ID</th>
+                  <th>Citizen Info</th>
+                  <th>Category & Title</th>
+                  <th>Location Area</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Upvotes</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="queueTableBody">
+                <tr>
+                  <td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">
+                    Loading municipal complaint queue...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: DEPARTMENT ROUTING -->
+      <section id="tabDepartments" class="tab-pane" style="display:none;">
+        <h2 style="font-size:1.6rem; color:var(--navy-900); margin-bottom:8px;">Designated Civic Departments</h2>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:24px;">Configured municipal bodies handling specialized civic infrastructures.</p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:20px;" id="departmentsListContainer">
+          <!-- Populated dynamically with all 9 departments -->
+        </div>
+      </section>
+
+      <!-- TAB 4: GOVERNMENT API GATEWAY (Section 11) -->
+      <section id="tabGovGateway" class="tab-pane" style="display:none;">
+        <div style="background:#fff; border-radius:var(--radius-xl); padding:28px; border:1px solid var(--surface-200); box-shadow:var(--shadow-sm); margin-bottom:28px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+            <div>
+              <span class="badge" style="background:#ECFDF5; color:#065F46; border:1px solid #6EE7B7; font-size:0.85rem; padding:4px 12px;">
+                CONNECTED & ACTIVE
+              </span>
+              <h2 style="font-size:1.5rem; color:var(--navy-900); margin-top:6px;">Government Department API Gateway</h2>
+            </div>
+            <div style="font-family:monospace; font-size:0.85rem; background:var(--surface-100); padding:8px 14px; border-radius:var(--radius-md);">
+              ENDPOINT: <strong>https://api.smartcity360.gov.in/v1/grievance</strong>
+            </div>
+          </div>
+          <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.6;">
+            High and Critical priority issues automatically bridge to official state department grievance backends (TANGEDCO, PWD, MCC). The system logs every external transaction and stores official reference ticket IDs.
+          </p>
+        </div>
+
+        <div class="data-table-card">
+          <div class="table-header-bar">
+            <h3 style="font-size:1.15rem; color:var(--navy-900);">Recent Government Integration Transaction Logs</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Log ID</th>
+                  <th>Complaint Ticket</th>
+                  <th>Target Department</th>
+                  <th>Government Ref Number</th>
+                  <th>HTTP Status</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody id="govLogsTableBody">
+                <tr>
+                  <td colspan="6" style="text-align:center; padding:30px; color:var(--text-muted);">
+                    Loading government API transmission logs...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: PRIORITY ALGORITHM CONFIGURATOR (Section 7 Admin) -->
+      <section id="tabAlgorithmConfig" class="tab-pane" style="display:none;">
+        <div style="max-width:800px; background:#fff; border-radius:var(--radius-xl); padding:36px; border:1px solid var(--surface-200); box-shadow:var(--shadow-sm);">
+          <span style="color:var(--teal-600); font-weight:700; font-size:0.82rem; text-transform:uppercase; letter-spacing:1px;">
+            ADMINISTRATOR CALIBRATION
+          </span>
+          <h2 style="font-size:1.6rem; color:var(--navy-900); margin:4px 0 10px;">Configurable Priority Scoring Formula</h2>
+          <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:24px;">
+            Adjust component weights according to seasonal civic priorities (e.g., increase severity weighting during monsoon flooding). The sum of all 5 weights must equal 1.00 (100%).
+          </p>
+
+          <form id="weightsConfigForm">
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="weightFreq">Report Frequency Weight (Default 30%)</label>
+                <input type="number" step="0.05" min="0" max="1" id="weightFreq" class="form-control" value="0.30">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="weightUnres">Unresolved Complaints Weight (Default 25%)</label>
+                <input type="number" step="0.05" min="0" max="1" id="weightUnres" class="form-control" value="0.25">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="weightSev">Issue Severity Weight (Default 20%)</label>
+                <input type="number" step="0.05" min="0" max="1" id="weightSev" class="form-control" value="0.20">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="weightRec">Recency of Reports Weight (Default 15%)</label>
+                <input type="number" step="0.05" min="0" max="1" id="weightRec" class="form-control" value="0.15">
+              </div>
+              <div class="form-group" style="grid-column:1/-1;">
+                <label class="form-label" for="weightRep">Citizen Upvotes & Confirmations Weight (Default 10%)</label>
+                <input type="number" step="0.05" min="0" max="1" id="weightRep" class="form-control" value="0.10">
+              </div>
+            </div>
+
+            <div style="padding-top:18px; border-top:1px solid var(--surface-200); display:flex; justify-content:space-between; align-items:center;">
+              <span id="weightsSumHint" style="font-size:0.9rem; font-weight:700; color:var(--teal-700);">Total Weight Sum: 1.00 (100%)</span>
+              <button type="submit" class="btn btn-primary">
+                <span>💾</span> Save & Recalculate City Priority Scores
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Status Update & Department Assignment Modal -->
+  <div class="modal-overlay" id="statusUpdateModal">
+    <div class="modal-box" style="max-width:640px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Update Complaint & Assign Department</h3>
+        <button class="modal-close-btn" onclick="closeModal('statusUpdateModal')">&times;</button>
+      </div>
+
+      <form id="statusUpdateForm" enctype="multipart/form-data">
+        <div class="modal-body">
+          <input type="hidden" id="updateComplaintId">
+
+          <div style="background:var(--surface-50); border:1px solid var(--surface-200); border-radius:var(--radius-md); padding:12px 16px; margin-bottom:18px;">
+            <div style="font-size:0.8rem; color:var(--text-muted);">TICKET: <strong id="updateModalTicket" style="color:var(--navy-900);"></strong></div>
+            <div style="font-size:0.95rem; font-weight:700; color:var(--navy-900); margin-top:2px;" id="updateModalTitle"></div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label required" for="updateStatusSelect">New Status</label>
+              <select id="updateStatusSelect" class="form-control" required>
+                <option value="Acknowledged">Acknowledged</option>
+                <option value="Under Review">Under Review</option>
+                <option value="Assigned to Department">Assigned to Department</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved (Finished Repairs)</option>
+                <option value="Closed">Closed</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="updateDepartmentSelect">Assign Responsible Department</label>
+              <select id="updateDepartmentSelect" class="form-control">
+                <!-- Departments loaded -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="updateOfficialRemarks">Official Remarks / Engineer Notes</label>
+            <textarea id="updateOfficialRemarks" class="form-control" rows="3" placeholder="Provide formal status notes, dispatched equipment details, or work completed..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="resolutionEvidenceFiles">Resolution Evidence Photos (Optional)</label>
+            <input type="file" id="resolutionEvidenceFiles" name="resolution_evidence" class="form-control" accept="image/*" multiple>
+            <div class="form-help">Upload photo proof of completed repairs for public verification.</div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('statusUpdateModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveStatusUpdate">Save Status & Notify Citizen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

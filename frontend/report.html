@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Civic Problem – Smart City 360</title>
+  <meta name="description" content="Submit a civic complaint with photographs, GPS location coordinates, and category details to your municipal authorities.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <!-- Leaflet CSS for Map Picker -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/index.html" class="brand-logo">
+        <img src="assets/images/logo.svg" alt="Smart City 360">
+      </a>
+
+      <button class="mobile-nav-toggle" aria-label="Toggle Navigation">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+
+      <nav class="main-nav">
+        <a href="/index.html" class="nav-link" data-i18n="nav_home">Home</a>
+        <a href="/report.html" class="nav-link active" data-i18n="nav_report">Report a Problem</a>
+        <a href="/map.html" class="nav-link" data-i18n="nav_map">Live Map</a>
+        <a href="/priority.html" class="nav-link" data-i18n="nav_priority">Priority Areas</a>
+        <a href="/track.html" class="nav-link" data-i18n="nav_track">Track Complaint</a>
+        <a href="/community.html" class="nav-link" data-i18n="nav_community">Community Reports</a>
+        <a href="/about.html" class="nav-link" data-i18n="nav_about">About Us</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="lang-selector">
+          <select class="lang-select" aria-label="Select Language">
+            <option value="en">English</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+          </select>
+        </div>
+        <div id="headerUserSection">
+          <a href="/login.html" class="btn btn-secondary btn-sm" data-i18n="nav_login">Login / Register</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <div style="background: var(--navy-900); color: #fff; padding: 40px 0 50px;">
+    <div class="container text-center" style="max-width: 720px; margin: 0 auto; text-align: center;">
+      <span style="display:inline-block; background:rgba(13,148,136,0.25); color:var(--teal-400); padding:4px 14px; border-radius:99px; font-weight:700; font-size:0.85rem; margin-bottom:12px;">
+        CITIZEN GRIEVANCE PORTAL
+      </span>
+      <h1 style="font-size: 2.4rem; color: #fff; margin-bottom: 12px;">Register a Civic Problem</h1>
+      <p style="color: #CBD5E1; font-size: 1.05rem;">
+        Your report directly alerts designated department engineers and updates the live community heat map. Please provide accurate details.
+      </p>
+    </div>
+  </div>
+
+  <!-- Complaint Form Container -->
+  <main class="form-page-layout">
+    <div class="container">
+      <div class="form-card">
+
+        <!-- Potential Duplicate Warning Banner (Dynamic) -->
+        <div id="duplicateAlert" class="duplicate-warning-banner">
+          <div style="display: flex; gap: 14px; align-items: flex-start;">
+            <div style="font-size: 1.8rem;">⚠️</div>
+            <div style="flex-grow: 1;">
+              <h4 style="color: #92400E; font-size: 1.1rem; margin-bottom: 4px;">Potential Duplicate Issue Detected Nearby!</h4>
+              <p style="font-size: 0.9rem; color: #78350F; margin-bottom: 10px;" id="duplicateText">
+                A similar issue was recently reported within 200m of this location. Supporting an existing issue boosts its priority score without cluttering the municipal queue.
+              </p>
+              <div id="duplicateList" style="margin-bottom: 12px;"></div>
+              <div style="display: flex; gap: 10px;">
+                <button type="button" class="btn btn-accent btn-sm" id="btnSupportExisting">
+                  <span>👍</span> Support Existing Issue Instead
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnIgnoreDuplicate">
+                  Continue with New Report
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form id="complaintForm" enctype="multipart/form-data">
+
+          <!-- Section 1: Citizen Contact Information -->
+          <div style="margin-bottom: 30px;">
+            <h3 style="font-size: 1.2rem; color: var(--navy-900); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--surface-200);">
+              1. Citizen Information
+            </h3>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label required" for="citizen_name">Full Name</label>
+                <input type="text" id="citizen_name" name="citizen_name" class="form-control" placeholder="e.g. Nithish Kumar" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label required" for="citizen_phone">Mobile Number</label>
+                <input type="tel" id="citizen_phone" name="citizen_phone" class="form-control" placeholder="e.g. +91 98401 23456" pattern="[\+0-9\s\-]{10,15}" required>
+                <div class="form-help">Kept confidential. Only used for SMS resolution updates.</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="citizen_email">Email Address (Optional)</label>
+                <input type="email" id="citizen_email" name="citizen_email" class="form-control" placeholder="e.g. citizen@email.com">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Problem Category Selection -->
+          <div style="margin-bottom: 30px;">
+            <h3 style="font-size: 1.2rem; color: var(--navy-900); margin-bottom: 8px; padding-bottom: 8px; border-bottom: 2px solid var(--surface-200);">
+              2. Problem Category
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px;">
+              Select the category that best matches the issue. This routes the complaint directly to the responsible civic department.
+            </p>
+
+            <input type="hidden" id="category_id" name="category_id" value="2" required>
+            
+            <div class="category-selector-grid" id="categoryGrid">
+              <!-- Loaded via JS with all 15 categories -->
+              <div style="grid-column: 1/-1; padding: 20px; text-align: center;">Loading categories...</div>
+            </div>
+          </div>
+
+          <!-- Section 3: Complaint Specifics -->
+          <div style="margin-bottom: 30px;">
+            <h3 style="font-size: 1.2rem; color: var(--navy-900); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--surface-200);">
+              3. Issue Specifics & Urgency
+            </h3>
+
+            <div class="form-group">
+              <label class="form-label required" for="title">Complaint Title</label>
+              <input type="text" id="title" name="title" class="form-control" placeholder="e.g. Large cave-in pothole near hospital gate causing accidents" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label required" for="description">Detailed Problem Description</label>
+              <textarea id="description" name="description" class="form-control" rows="4" placeholder="Describe the problem, approximate size, how long it has existed, and safety risks to pedestrians or vehicles..." required></textarea>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label required" for="urgency_level">Estimated Urgency Level</label>
+                <select id="urgency_level" name="urgency_level" class="form-control" required>
+                  <option value="Critical">🚨 Critical – Immediate danger to life / electrocution / deep flood</option>
+                  <option value="High" selected>⚠️ High – Severe traffic hazard / main pipe burst / major pothole</option>
+                  <option value="Medium">⚡ Medium – Garbage overflow / dark streetlights / minor leak</option>
+                  <option value="Low">🌱 Low – Park maintenance / cosmetic repair / sign cleaning</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="complaint_photos">Upload Photographs (Max 3, up to 5MB each)</label>
+                <input type="file" id="complaint_photos" name="images" class="form-control" accept="image/jpeg,image/png,image/webp" multiple>
+                <div class="form-help">Photos provide tangible evidence to municipal field engineers.</div>
+              </div>
+            </div>
+
+            <!-- Image Preview Box -->
+            <div id="imagePreviewContainer" style="display:flex; gap:12px; margin-top:10px;"></div>
+          </div>
+
+          <!-- Section 4: Exact Location & Interactive Leaflet Map Picker -->
+          <div style="margin-bottom: 30px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--surface-200);">
+              <h3 style="font-size: 1.2rem; color: var(--navy-900);">
+                4. Problem Location & Interactive Map Pin
+              </h3>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnUseMyLocation">
+                <span>🎯</span> Use My Current GPS Location
+              </button>
+            </div>
+
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 12px;">
+              Click or drag the pin on the map to mark the exact spot. Geographic coordinates are critical for prioritisation.
+            </p>
+
+            <div class="location-picker-box" id="locationPickerMap"></div>
+
+            <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 16px;">
+              <div class="location-coords-badge">
+                <span>📍 Lat:</span>
+                <span id="displayLat">13.0418</span>
+              </div>
+              <div class="location-coords-badge">
+                <span>Lng:</span>
+                <span id="displayLng">80.2341</span>
+              </div>
+              <span id="locationAddressHint" style="font-size: 0.82rem; color: var(--teal-700); font-weight: 600;">Click on map to position pin</span>
+            </div>
+
+            <input type="hidden" id="latitude" name="latitude" value="13.0418" required>
+            <input type="hidden" id="longitude" name="longitude" value="80.2341" required>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label required" for="area_name">Area / Neighbourhood</label>
+                <input type="text" id="area_name" name="area_name" class="form-control" placeholder="e.g. T. Nagar, Usman Road" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label required" for="address_landmark">Street Address / Landmark</label>
+                <input type="text" id="address_landmark" name="address_landmark" class="form-control" placeholder="e.g. Near Panagal Park Bus Stop, Pillar 42" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label required" for="city">City / Municipality</label>
+                <input type="text" id="city" name="city" class="form-control" value="Chennai" required>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="district">District</label>
+                <input type="text" id="district" name="district" class="form-control" value="Chennai">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="state">State</label>
+                <input type="text" id="state" name="state" class="form-control" value="Tamil Nadu">
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button & Disclaimer -->
+          <div style="padding-top: 20px; border-top: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 440px;">
+              By submitting, you certify that this complaint is genuine. False or misleading reports are punishable under civic municipal bylaws.
+            </p>
+            <button type="submit" class="btn btn-primary btn-lg" id="btnSubmitComplaint" style="min-width: 220px;">
+              <span>🚀</span> Submit Complaint
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Submission Confirmation Modal -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-box text-center" style="padding: 36px 30px; text-align: center;">
+      <div style="width: 72px; height: 72px; border-radius: 50%; background: var(--teal-50); color: var(--teal-600); font-size: 2.2rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;">
+        ✓
+      </div>
+      <h2 style="font-size: 1.8rem; color: var(--navy-900); margin-bottom: 8px;">Complaint Registered Successfully!</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
+        Your issue has been logged in the Smart City 360 system and assigned a unique tracking ticket.
+      </p>
+
+      <div style="background: var(--surface-100); border: 2px dashed var(--teal-500); padding: 18px; border-radius: var(--radius-lg); margin-bottom: 24px;">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">
+          UNIQUE TRACKING ID
+        </div>
+        <div style="font-family: monospace; font-size: 1.8rem; font-weight: 800; color: var(--teal-700);" id="modalTrackingId">
+          SC360-2026-XXXXX
+        </div>
+        <div style="font-size: 0.85rem; color: var(--navy-700); margin-top: 6px;">
+          Priority Level: <strong id="modalPriorityLevel" style="color:var(--priority-critical);">Critical (92.5)</strong>
+        </div>
+      </div>
+
+      <div id="modalGovForwardAlert" style="display:none; background: #ECFDF5; border: 1px solid #6EE7B7; border-radius: var(--radius-md); padding: 12px; font-size: 0.85rem; color: #065F46; margin-bottom: 20px;">
+        ⚡ <strong>Government Gateway Notice:</strong> Automatically forwarded to Government Department API. External Ref: <span id="modalGovRef" style="font-family:monospace; font-weight:bold;"></span>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <a href="#" id="modalTrackBtn" class="btn btn-primary btn-lg">
+          <span>🔍</span> Track Complaint Status
+        </a>
+        <a href="/map.html" class="btn btn-secondary btn-lg">
+          <span>🗺️</span> View on Map
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/report.js"></script>
+</body>
+</html>

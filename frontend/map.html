@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Live Civic Map – Smart City 360</title>
+  <meta name="description" content="Explore live colour-coded civic complaint markers and density heatmaps across neighbourhoods. Prioritise critical problems and monitor resolutions.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+</head>
+<body style="overflow: hidden; height: 100vh;">
+
+  <!-- Site Navigation Bar -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/index.html" class="brand-logo">
+        <img src="assets/images/logo.svg" alt="Smart City 360">
+      </a>
+
+      <button class="mobile-nav-toggle" aria-label="Toggle Navigation">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+
+      <nav class="main-nav">
+        <a href="/index.html" class="nav-link" data-i18n="nav_home">Home</a>
+        <a href="/report.html" class="nav-link" data-i18n="nav_report">Report a Problem</a>
+        <a href="/map.html" class="nav-link active" data-i18n="nav_map">Live Map</a>
+        <a href="/priority.html" class="nav-link" data-i18n="nav_priority">Priority Areas</a>
+        <a href="/track.html" class="nav-link" data-i18n="nav_track">Track Complaint</a>
+        <a href="/community.html" class="nav-link" data-i18n="nav_community">Community Reports</a>
+        <a href="/about.html" class="nav-link" data-i18n="nav_about">About Us</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="lang-selector">
+          <select class="lang-select" aria-label="Select Language">
+            <option value="en">English</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+          </select>
+        </div>
+        <div id="headerUserSection">
+          <a href="/login.html" class="btn btn-secondary btn-sm" data-i18n="nav_login">Login / Register</a>
+        </div>
+        <a href="/report.html" class="btn btn-primary btn-sm">Report Issue</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Full-Screen Interactive Map Layout -->
+  <main class="map-page-layout">
+    
+    <!-- Sidebar: High-Priority Zones & Active Complaints List -->
+    <aside class="map-sidebar">
+      
+      <!-- Filter Bar -->
+      <div class="map-filter-bar">
+        <div class="map-search-box">
+          <span class="map-search-icon">🔍</span>
+          <input type="text" id="mapSearchInput" class="map-search-input" placeholder="Search area, landmark, PIN (e.g. T. Nagar, 600017)...">
+        </div>
+
+        <div class="map-filter-chips">
+          <select id="filterCategory" class="filter-select">
+            <option value="">All Categories (15)</option>
+          </select>
+
+          <select id="filterPriority" class="filter-select">
+            <option value="">All Priorities</option>
+            <option value="Critical">🔴 Critical</option>
+            <option value="High">🟠 High</option>
+            <option value="Medium">🟡 Medium</option>
+            <option value="Low">🟢 Low</option>
+          </select>
+
+          <select id="filterStatus" class="filter-select">
+            <option value="">All Statuses</option>
+            <option value="Submitted">Submitted</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">🔵 Resolved</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- High Priority Areas Section in Sidebar -->
+      <div style="padding: 16px 20px; background: var(--surface-100); border-bottom: 1px solid var(--surface-200);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+          <h4 style="font-size: 0.85rem; font-weight: 800; color: var(--navy-900); text-transform: uppercase; letter-spacing: 0.5px;">
+            🚨 High-Priority Zones
+          </h4>
+          <span id="priorityZoneCountBadge" style="background:var(--priority-critical); color:#fff; font-size:0.75rem; font-weight:700; padding:2px 8px; border-radius:99px;">
+            3 Critical
+          </span>
+        </div>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px;">
+          Click any neighbourhood zone to fly map directly to that problem cluster.
+        </p>
+
+        <!-- Horizontal Scrollable Zone Pills -->
+        <div id="priorityZonesContainer" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:6px;">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+
+      <!-- Complaints List in View -->
+      <div style="padding: 14px 20px 8px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--surface-200);">
+        <span style="font-weight:700; font-size:0.9rem; color:var(--navy-900);">
+          Reported Issues (<span id="visibleComplaintCount">0</span>)
+        </span>
+        <button id="btnResetFilters" style="background:none; border:none; font-size:0.8rem; color:var(--teal-600); font-weight:600; cursor:pointer;">
+          Reset Filters
+        </button>
+      </div>
+
+      <div id="sidebarComplaintsList" style="flex-grow:1; overflow-y:auto; padding: 12px 16px;">
+        <div style="text-align:center; padding:30px; color:var(--text-muted); font-size:0.9rem;">
+          Loading map complaints...
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Map Canvas -->
+    <div class="map-container">
+      <div id="leafletMap"></div>
+
+      <!-- Floating Controls -->
+      <div class="map-float-actions">
+        <button class="map-float-btn" id="btnToggleHeatmap" title="Switch between Markers and Heatmap">
+          <span id="heatmapIcon">🔥</span> <span id="heatmapText">Show Heatmap Layer</span>
+        </button>
+        <button class="map-float-btn" id="btnLocateMe" title="Find My Location">
+          <span>🎯</span> Locate Me
+        </button>
+      </div>
+
+      <!-- Color Legend Overlay (Section 6 requirement) -->
+      <div class="map-legend-box">
+        <div class="legend-title">🗺️ Priority Color Legend</div>
+        <div class="legend-item">
+          <span class="legend-color-dot" style="background: var(--priority-critical);"></span>
+          <span><strong>Critical</strong> (Score 80–100)</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color-dot" style="background: var(--priority-high);"></span>
+          <span><strong>High Priority</strong> (Score 60–79)</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color-dot" style="background: var(--priority-medium);"></span>
+          <span><strong>Medium</strong> (Score 35–59)</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color-dot" style="background: var(--priority-low);"></span>
+          <span><strong>Low</strong> (Score 0–34)</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color-dot" style="background: var(--status-resolved);"></span>
+          <span><strong>Resolved</strong> (Officially Fixed)</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Full Complaint Details Modal -->
+  <div class="modal-overlay" id="complaintDetailModal">
+    <div class="modal-box" style="max-width: 680px;">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span id="modalCategoryBadge" class="category-pill">Category</span>
+          <span id="modalTrackingBadge" style="font-family:monospace; font-weight:700; color:var(--navy-600);"></span>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('complaintDetailModal')">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div id="modalImageWrap" style="height:220px; border-radius:var(--radius-lg); overflow:hidden; background:var(--navy-900); margin-bottom:18px;">
+          <img id="modalDetailImage" src="" alt="Complaint Evidence" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <span id="modalPriorityBadge" class="badge"></span>
+          <span id="modalStatusBadge" class="badge"></span>
+        </div>
+
+        <h3 id="modalDetailTitle" style="font-size:1.3rem; margin-bottom:10px; color:var(--navy-900);"></h3>
+        <p id="modalDetailDesc" style="color:var(--text-muted); font-size:0.95rem; margin-bottom:18px; line-height:1.6;"></p>
+
+        <div style="background:var(--surface-50); border:1px solid var(--surface-200); border-radius:var(--radius-md); padding:14px; margin-bottom:18px;">
+          <div style="font-size:0.85rem; margin-bottom:6px;">
+            <strong>📍 Location:</strong> <span id="modalDetailLocation"></span>
+          </div>
+          <div style="font-size:0.85rem; margin-bottom:6px;">
+            <strong>🏛️ Assigned Authority:</strong> <span id="modalDetailDepartment">Municipal Corporation</span>
+          </div>
+          <div style="font-size:0.85rem;">
+            <strong>⏱️ Reported:</strong> <span id="modalDetailDate"></span>
+          </div>
+        </div>
+
+        <!-- Official Remarks / Resolution Description if available -->
+        <div id="modalRemarksSection" style="display:none; background:#EFF6FF; border:1px solid #BFDBFE; border-radius:var(--radius-md); padding:14px; margin-bottom:18px;">
+          <div style="font-weight:700; color:#1E40AF; font-size:0.9rem; margin-bottom:4px;">Official Engineer Remarks</div>
+          <p id="modalRemarksText" style="font-size:0.88rem; color:#1E3A8A;"></p>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+        <button id="modalUpvoteBtn" class="btn-support">
+          <span>👍 Support This Issue</span>
+          <span id="modalUpvoteCount" class="support-count">0</span>
+        </button>
+
+        <div style="display:flex; gap:10px;">
+          <a href="#" id="modalTrackLink" class="btn btn-primary btn-sm">
+            <span>🔍</span> Full Tracking Timeline
+          </a>
+          <button class="btn btn-secondary btn-sm" onclick="closeModal('complaintDetailModal')">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet & Heatmap Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/map.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="50%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F766E" />
+    </linearGradient>
+    <linearGradient id="buildGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95" />
+    </linearGradient>
+    <linearGradient id="buildGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0D9488" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#111827" stop-opacity="0.95" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Sky Background with Stars / Sensor Nodes -->
+  <rect width="800" height="500" rx="20" fill="url(#skyGrad)" />
+
+  <!-- Constellation / Smart Grid Lines -->
+  <g stroke="#14B8A6" stroke-width="1" stroke-dasharray="3,3" opacity="0.35">
+    <line x1="120" y1="120" x2="260" y2="80" />
+    <line x1="260" y1="80" x2="420" y2="110" />
+    <line x1="420" y1="110" x2="600" y2="70" />
+    <line x1="600" y1="70" x2="720" y2="140" />
+    <line x1="260" y1="80" x2="350" y2="190" />
+    <line x1="420" y1="110" x2="480" y2="210" />
+    <line x1="480" y1="210" x2="600" y2="70" />
+  </g>
+
+  <!-- Smart IoT Nodes (Glowing Dots) -->
+  <circle cx="120" cy="120" r="5" fill="#38BDF8" filter="url(#glow)" />
+  <circle cx="260" cy="80" r="7" fill="#2DD4BF" filter="url(#glow)" />
+  <circle cx="420" cy="110" r="6" fill="#FBBF24" filter="url(#glow)" />
+  <circle cx="600" cy="70" r="7" fill="#F43F5E" filter="url(#glow)" />
+  <circle cx="720" cy="140" r="5" fill="#38BDF8" filter="url(#glow)" />
+  <circle cx="480" cy="210" r="6" fill="#10B981" filter="url(#glow)" />
+
+  <!-- Background Skyline -->
+  <path d="M 50 500 L 50 320 L 90 320 L 90 280 L 140 280 L 140 340 L 180 340 L 180 250 L 230 250 L 230 500 Z" fill="#1E293B" opacity="0.6" />
+  <path d="M 580 500 L 580 290 L 630 290 L 630 240 L 690 240 L 690 330 L 750 330 L 750 500 Z" fill="#1E293B" opacity="0.6" />
+
+  <!-- Midground Modern Towers -->
+  <!-- Tower 1 -->
+  <rect x="110" y="210" width="90" height="290" rx="4" fill="url(#buildGrad1)" />
+  <!-- Windows -->
+  <g fill="#38BDF8" opacity="0.7">
+    <rect x="125" y="230" width="12" height="18" rx="2" />
+    <rect x="150" y="230" width="12" height="18" rx="2" />
+    <rect x="175" y="230" width="12" height="18" rx="2" />
+    <rect x="125" y="260" width="12" height="18" rx="2" />
+    <rect x="150" y="260" width="12" height="18" rx="2" />
+    <rect x="175" y="260" width="12" height="18" rx="2" fill="#FBBF24" />
+    <rect x="125" y="290" width="12" height="18" rx="2" />
+    <rect x="150" y="290" width="12" height="18" rx="2" />
+    <rect x="175" y="290" width="12" height="18" rx="2" />
+  </g>
+
+  <!-- Central Eco Tower (Tallest) -->
+  <polygon points="320,130 380,110 440,130 440,500 320,500" fill="url(#buildGrad2)" />
+  <polygon points="375,60 385,60 380,110" fill="#2DD4BF" filter="url(#glow)" />
+  <g fill="#A7F3D0" opacity="0.8">
+    <rect x="340" y="150" width="18" height="24" rx="2" />
+    <rect x="370" y="150" width="18" height="24" rx="2" />
+    <rect x="400" y="150" width="18" height="24" rx="2" />
+    <rect x="340" y="190" width="18" height="24" rx="2" fill="#FDE047" />
+    <rect x="370" y="190" width="18" height="24" rx="2" />
+    <rect x="400" y="190" width="18" height="24" rx="2" />
+    <rect x="340" y="230" width="18" height="24" rx="2" />
+    <rect x="370" y="230" width="18" height="24" rx="2" />
+    <rect x="400" y="230" width="18" height="24" rx="2" />
+  </g>
+
+  <!-- Tower 3 -->
+  <rect x="470" y="190" width="85" height="310" rx="4" fill="url(#buildGrad1)" />
+  <g fill="#7DD3FC" opacity="0.75">
+    <rect x="485" y="210" width="14" height="20" rx="2" />
+    <rect x="510" y="210" width="14" height="20" rx="2" />
+    <rect x="535" y="210" width="14" height="20" rx="2" />
+    <rect x="485" y="245" width="14" height="20" rx="2" />
+    <rect x="510" y="245" width="14" height="20" rx="2" fill="#F87171" />
+    <rect x="535" y="245" width="14" height="20" rx="2" />
+  </g>
+
+  <!-- Foreground Smart Highway & Metro Flyover -->
+  <path d="M 0 460 Q 300 410 800 450 L 800 500 L 0 500 Z" fill="#0F172A" />
+  <path d="M 0 430 Q 300 380 800 420" stroke="#14B8A6" stroke-width="4" fill="none" opacity="0.8" />
+  <path d="M 0 440 Q 300 390 800 430" stroke="#F59E0B" stroke-width="2" stroke-dasharray="10,8" fill="none" />
+
+  <!-- Floating Priority Pins on Map Representation -->
+  <g transform="translate(240, 260)" filter="url(#glow)">
+    <circle cx="16" cy="16" r="16" fill="#EF4444" opacity="0.3" />
+    <circle cx="16" cy="16" r="10" fill="#EF4444" />
+    <path d="M 12 16 L 15 19 L 21 13" stroke="#FFF" stroke-width="2" fill="none" />
+  </g>
+
+  <g transform="translate(560, 280)" filter="url(#glow)">
+    <circle cx="14" cy="14" r="14" fill="#F97316" opacity="0.3" />
+    <circle cx="14" cy="14" r="9" fill="#F97316" />
+    <circle cx="14" cy="14" r="3" fill="#FFF" />
+  </g>
+
+  <g transform="translate(670, 360)" filter="url(#glow)">
+    <circle cx="14" cy="14" r="14" fill="#10B981" opacity="0.3" />
+    <circle cx="14" cy="14" r="9" fill="#10B981" />
+    <path d="M 10 14 L 13 17 L 18 11" stroke="#FFF" stroke-width="2" fill="none" />
+  </g>
+
+  <!-- Foreground Banner Badge -->
+  <rect x="250" y="440" width="300" height="42" rx="21" fill="#1E293B" stroke="#0D9488" stroke-width="1.5" />
+  <circle cx="272" cy="461" r="7" fill="#10B981" />
+  <text x="290" y="466" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#F8FAFC">
+    LIVE CITIZEN RESOLUTION NETWORK
+  </text>
+</svg>
